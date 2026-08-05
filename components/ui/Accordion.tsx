@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils/cn";
 export type AccordionItemData = {
   id: string;
   question: string;
-  answer: string;
+  answer: React.ReactNode;
 };
 
 /**

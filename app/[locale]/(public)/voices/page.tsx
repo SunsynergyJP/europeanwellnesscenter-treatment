@@ -2,14 +2,26 @@ import Image from "next/image";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card, CardBody, CardGrid } from "@/components/ui/Card";
+import { getHomeVoices } from "@/lib/sanity/data";
 
-const testimonialVideos = [
+const fallbackVoices = [
   { id: "1", youtubeId: "4lFaVJvpilg", title: "治療を受けた方のインタビュー ①" },
   { id: "2", youtubeId: "hatBpKei8XE", title: "治療を受けた方のインタビュー ②" },
   { id: "3", youtubeId: "iPAcK247kno", title: "治療を受けた方のインタビュー ③" },
 ];
 
-export default function VoicesPage() {
+export default async function VoicesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const cmsVoices = await getHomeVoices(locale);
+  const voices =
+    cmsVoices.length > 0
+      ? cmsVoices.map((v) => ({ id: v._id, youtubeId: v.youtubeVideoId, title: v.title }))
+      : fallbackVoices;
+
   return (
     <Section tone="white">
       <SectionHeading
@@ -18,7 +30,7 @@ export default function VoicesPage() {
         description="European Wellness Centerで治療を受けられた方の一部のインタビュー動画です(YouTubeが別タブで開きます)。"
       />
       <CardGrid>
-        {testimonialVideos.map((video) => (
+        {voices.map((video) => (
           <Card key={video.id} as="article">
             <a
               href={`https://www.youtube.com/watch?v=${video.youtubeId}`}

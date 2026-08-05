@@ -13,12 +13,23 @@ export const homeCasesQuery = groq`
   *[_type == "case" && featuredOnHome == true && language == $locale] | order(order asc)
 `;
 
+export const allCasesQuery = groq`
+  *[_type == "case" && language == $locale] | order(order asc){
+    ...,
+    condition->
+  }
+`;
+
 export const homeVoicesQuery = groq`
   *[_type == "voice" && language == $locale] | order(order asc)
 `;
 
 export const homeFaqQuery = groq`
   *[_type == "faq" && featuredOnHome == true && language == $locale] | order(order asc)
+`;
+
+export const allFaqQuery = groq`
+  *[_type == "faq" && language == $locale] | order(order asc)
 `;
 
 export const caseBySlugQuery = groq`

@@ -4,15 +4,18 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody, CardGrid } from "@/components/ui/Card";
-import { Accordion } from "@/components/ui/Accordion";
+import { Accordion, type AccordionItemData } from "@/components/ui/Accordion";
+import { RichText } from "@/components/ui/RichText";
 import { Link } from "@/lib/i18n/navigation";
+import { getHomeCases, getHomeFaqs, getHomeVoices } from "@/lib/sanity/data";
+import { urlForImage } from "@/lib/sanity/image";
 
 /**
  * トップページ(Phase1ワイヤーフレーム/Phase3ブループリント準拠)。
  *
- * NOTE: 本文・症例・FAQ・動画IDは実コンテンツ確定までのプレースホルダーです。
- * Phase8後続でSanity(症例/FAQ/声/施術メニュー)からのデータ取得に置き換えます。
- * Testimonialsは研修LP(#voices)と同じYouTube3本パターンを採用しています。
+ * 症例・患者様の声・FAQはSanityから取得する。データが未投入の場合に
+ * 空白セクションにならないよう、フォールバック用の静的コンテンツを保持している。
+ * Testimonialsは研修LP(#voices)と同じYouTube3本パターンを採用。
  */
 
 const conditionGroups = [
@@ -55,13 +58,18 @@ const applySteps = [
   { step: "4", title: "治療開始" },
 ];
 
-const testimonialVideos = [
+const fallbackCases = [
+  { href: "/cases", img: "/images/case-down-syndrome.png", label: "ダウン症の治療症例" },
+  { href: "/cases", img: "/images/case-placenta.png", label: "プラセンタの投与" },
+];
+
+const fallbackVoices = [
   { id: "1", youtubeId: "4lFaVJvpilg", title: "治療を受けた方のインタビュー ①" },
   { id: "2", youtubeId: "hatBpKei8XE", title: "治療を受けた方のインタビュー ②" },
   { id: "3", youtubeId: "iPAcK247kno", title: "治療を受けた方のインタビュー ③" },
 ];
 
-const faqDigest = [
+const fallbackFaqs: AccordionItemData[] = [
   {
     id: "faq-1",
     question: "幹細胞治療とはどのような治療ですか?",
@@ -89,8 +97,43 @@ export async function generateMetadata() {
   };
 }
 
-export default async function HomePage() {
-  const t = await getTranslations();
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const [t, cmsCases, cmsVoices, cmsFaqs] = await Promise.all([
+    getTranslations(),
+    getHomeCases(locale),
+    getHomeVoices(locale),
+    getHomeFaqs(locale),
+  ]);
+
+  const cases =
+    cmsCases.length > 0
+      ? cmsCases.map((c) => ({
+          href: `/cases/${c.slug.current}`,
+          img: c.beforeAfterImages?.[0]?.image
+            ? urlForImage(c.beforeAfterImages[0].image).width(800).height(450).url()
+            : "/images/hero-kota-kinabalu.png",
+          label: c.title,
+        }))
+      : fallbackCases;
+
+  const voices =
+    cmsVoices.length > 0
+      ? cmsVoices.map((v) => ({ id: v._id, youtubeId: v.youtubeVideoId, title: v.title }))
+      : fallbackVoices;
+
+  const faqs: AccordionItemData[] =
+    cmsFaqs.length > 0
+      ? cmsFaqs.map((f) => ({
+          id: f._id,
+          question: f.question,
+          answer: <RichText value={f.answer} />,
+        }))
+      : fallbackFaqs;
 
   return (
     <>
@@ -190,10 +233,7 @@ export default async function HomePage() {
           description="ダウン症の治療症例、プラセンタの投与など、実際の症例の一部をご紹介します。"
         />
         <CardGrid>
-          {[
-            { href: "/cases", img: "/images/case-down-syndrome.png", label: "ダウン症の治療症例" },
-            { href: "/cases", img: "/images/case-placenta.png", label: "プラセンタの投与" },
-          ].map((c) => (
+          {cases.map((c) => (
             <Card key={c.label} as="article">
               <div className="relative aspect-video">
                 <Image src={c.img} alt={c.label} fill className="object-cover" />
@@ -284,7 +324,7 @@ export default async function HomePage() {
           description="European Wellness Centerで治療を受けられた方の一部のインタビュー動画です(YouTubeが別タブで開きます)。"
         />
         <CardGrid>
-          {testimonialVideos.map((video) => (
+          {voices.map((video) => (
             <a
               key={video.id}
               href={`https://www.youtube.com/watch?v=${video.youtubeId}`}
@@ -320,7 +360,7 @@ export default async function HomePage() {
       {/* 10. FAQダイジェスト */}
       <Section tone="offwhite">
         <SectionHeading eyebrow="QUESTION" title="よくある質問" />
-        <Accordion items={faqDigest} />
+        <Accordion items={faqs} />
         <div className="mt-8">
           <Link href="/faq" className="text-sm text-gold-dark hover:underline">
             {t("nav.faq")}をもっと見る →

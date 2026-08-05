@@ -1,12 +1,12 @@
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Accordion } from "@/components/ui/Accordion";
+import { Accordion, type AccordionItemData } from "@/components/ui/Accordion";
+import { RichText } from "@/components/ui/RichText";
+import { client } from "@/lib/sanity/client";
+import { allFaqQuery } from "@/lib/sanity/queries";
+import type { FaqDoc } from "@/lib/sanity/data";
 
-/**
- * NOTE: プレースホルダーFAQです。Sanity連携後は`faq`コレクションの
- * category(治療について/費用について/渡航について等)別に表示します。
- */
-const faqItems = [
+const fallbackItems: AccordionItemData[] = [
   {
     id: "faq-1",
     question: "幹細胞治療とはどのような治療ですか?",
@@ -15,35 +15,36 @@ const faqItems = [
   },
   {
     id: "faq-2",
-    question: "日本人スタッフのサポートはありますか?",
-    answer:
-      "MMJドクターの先生方が現地エキスパート医師と協調しながら、現地治療と日本での治療を組み合わせたサポート体制を整えています。",
-  },
-  {
-    id: "faq-3",
     question: "どのような症状・疾患が対象になりますか?",
-    answer:
-      "難治性疾患からアンチエイジングまで幅広く対応しています。詳細は対象となる症状のページをご確認ください。",
-  },
-  {
-    id: "faq-4",
-    question: "渡航や滞在について不安があります",
-    answer:
-      "お申込み後は専用のご案内ページ(参加者専用エリア)で渡航前の注意事項、現地情報、TO-DOリストなどをご確認いただけます。",
-  },
-  {
-    id: "faq-5",
-    question: "まずは何から始めればよいですか?",
-    answer:
-      "無料相談・お問い合わせフォームからご連絡ください。ご説明会のご案内をさせていただきます。",
+    answer: "難治性疾患からアンチエイジングまで幅広く対応しています。",
   },
 ];
 
-export default function FaqPage() {
+export default async function FaqPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const cmsFaqs = await client.fetch<FaqDoc[]>(
+    allFaqQuery,
+    { locale },
+    { next: { tags: ["faq"] } },
+  );
+
+  const items: AccordionItemData[] =
+    cmsFaqs.length > 0
+      ? cmsFaqs.map((f) => ({
+          id: f._id,
+          question: f.question,
+          answer: <RichText value={f.answer} />,
+        }))
+      : fallbackItems;
+
   return (
     <Section tone="white">
       <SectionHeading eyebrow="QUESTION" title="よくある質問" />
-      <Accordion items={faqItems} />
+      <Accordion items={items} />
     </Section>
   );
 }
