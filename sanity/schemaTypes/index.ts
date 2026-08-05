@@ -6,6 +6,7 @@ import voice from "./voice";
 import faq from "./faq";
 import post from "./post";
 import condition from "./condition";
+import staticPage from "./staticPage";
 import siteSettings from "./siteSettings";
 import companyInfo from "./companyInfo";
 import departureBatch from "./departureBatch";
@@ -27,6 +28,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     // マスタ設定
     condition,
     treatmentMenu,
+    staticPage,
     // サイト全体設定
     siteSettings,
     companyInfo,

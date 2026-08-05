@@ -9,8 +9,11 @@ type CompanyInfoDoc = {
   address?: string;
   representativeName?: string;
   foundedYear?: string;
+  capital?: string;
+  employeeCount?: string;
   businessDescription?: string;
   phoneNumber?: string;
+  faxNumber?: string;
 };
 
 const companyInfoQuery = groq`*[_type == "companyInfo" && language == $locale][0]`;
@@ -29,14 +32,17 @@ export default async function CompanyPage({
 
   const facts = [
     { label: "会社名", value: companyInfo?.companyName ?? "SUN SYNERGY Co., Ltd.(株式会社サンシナジー)" },
-    { label: "所在地", value: companyInfo?.address },
     { label: "代表者", value: companyInfo?.representativeName },
     { label: "設立", value: companyInfo?.foundedYear },
-    { label: "事業内容", value: companyInfo?.businessDescription },
+    { label: "資本金", value: companyInfo?.capital },
+    { label: "従業員数", value: companyInfo?.employeeCount },
+    { label: "所在地", value: companyInfo?.address },
     { label: "電話番号", value: companyInfo?.phoneNumber },
+    { label: "FAX番号", value: companyInfo?.faxNumber },
+    { label: "事業内容", value: companyInfo?.businessDescription },
   ].filter((fact) => Boolean(fact.value));
 
-  const hasAllDetails = facts.length >= 5;
+  const hasAllDetails = facts.length >= 7;
 
   return (
     <Section tone="white">
@@ -45,7 +51,9 @@ export default async function CompanyPage({
         {facts.map((fact) => (
           <div key={fact.label} className="grid gap-1 py-4 sm:grid-cols-4 sm:gap-4">
             <dt className="text-sm text-navy/60">{fact.label}</dt>
-            <dd className="text-sm text-navy sm:col-span-3">{fact.value}</dd>
+            <dd className="whitespace-pre-line text-sm text-navy sm:col-span-3">
+              {fact.value}
+            </dd>
           </div>
         ))}
       </dl>

@@ -29,6 +29,7 @@ export const structure: StructureResolver = (S) =>
             .items([
               S.documentTypeListItem("condition").title("症状タグ"),
               S.documentTypeListItem("treatmentMenu").title("施術メニュー"),
+              S.documentTypeListItem("staticPage").title("静的ページ(法務等)"),
             ]),
         ),
       S.listItem()
