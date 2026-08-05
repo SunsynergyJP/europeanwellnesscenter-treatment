@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  /* Phase5 デザインシステム: ブランドカラー */
+  --color-navy: #0b1f3a;
+  --color-navy-light: #132a4d;
+  --color-navy-dark: #071527;
+
+  --color-gold: #c9a66b;
+  --color-gold-light: #e4cfa0;
+  --color-gold-dark: #a98849;
+
+  --color-offwhite: #f8f6f2;
+
+  /* 状態色(症例/免責/フォーム用) */
+  --color-notice-bg: #f1efea;
+  --color-success: #4b7a5e;
+  --color-error: #a94442;
+
+  /* タイポグラフィ */
+  --font-serif: var(--font-serif-shippori), "Noto Serif JP", serif;
+  --font-sans: var(--font-sans-noto), "Hiragino Sans", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-feature-settings: "palt";
+}
+
+/* 詳細ページ・会員エリアのアンカー用スクロールマージン */
+section[id],
+div[id] {
+  scroll-margin-top: 88px;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-navy);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

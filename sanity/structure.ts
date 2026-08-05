@@ -1,0 +1,59 @@
+import type { StructureResolver } from "sanity/structure";
+
+/**
+ * Phase4で定義したDesk Structure(3グループ)。
+ * 非エンジニアの運用担当者が迷わないよう分類する。
+ */
+export const structure: StructureResolver = (S) =>
+  S.list()
+    .title("コンテンツ")
+    .items([
+      S.listItem()
+        .title("コンテンツ管理")
+        .child(
+          S.list()
+            .title("コンテンツ管理")
+            .items([
+              S.documentTypeListItem("case").title("症例紹介"),
+              S.documentTypeListItem("doctor").title("医師紹介"),
+              S.documentTypeListItem("voice").title("患者様の声"),
+              S.documentTypeListItem("faq").title("FAQ"),
+              S.documentTypeListItem("post").title("お知らせ・コラム"),
+            ]),
+        ),
+      S.listItem()
+        .title("マスタ設定")
+        .child(
+          S.list()
+            .title("マスタ設定")
+            .items([
+              S.documentTypeListItem("condition").title("症状タグ"),
+              S.documentTypeListItem("treatmentMenu").title("施術メニュー"),
+            ]),
+        ),
+      S.listItem()
+        .title("サイト全体設定")
+        .child(
+          S.list()
+            .title("サイト全体設定")
+            .items([
+              S.documentTypeListItem("siteSettings").title("サイト設定"),
+              S.documentTypeListItem("companyInfo").title("会社情報"),
+            ]),
+        ),
+      S.divider(),
+      S.listItem()
+        .title("参加者専用エリア")
+        .child(
+          S.list()
+            .title("参加者専用エリア")
+            .items([
+              S.documentTypeListItem("departureBatch").title("渡航バッチ"),
+              S.documentTypeListItem("participant").title("参加者プロフィール"),
+              S.documentTypeListItem("staff").title("同行スタッフ"),
+              S.documentTypeListItem("checklistItem").title("TO-DOリスト項目"),
+              S.documentTypeListItem("localInfoQA").title("現地Q&A"),
+              S.documentTypeListItem("documentChecklistItem").title("提出書類チェックリスト"),
+            ]),
+        ),
+    ]);

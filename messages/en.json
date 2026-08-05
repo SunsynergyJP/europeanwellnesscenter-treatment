@@ -1,0 +1,24 @@
+{
+  "common": {
+    "siteName": "European Wellness Center Kota Kinabalu",
+    "siteNameShort": "EWC Kota Kinabalu",
+    "ctaPrimary": "Apply Now",
+    "ctaSecondary": "Contact Us"
+  },
+  "nav": {
+    "treatment": "About the Treatment",
+    "cases": "Case Studies",
+    "doctors": "Our Doctors",
+    "voices": "Patient Voices",
+    "faq": "FAQ",
+    "blog": "News & Articles",
+    "flow": "Treatment Process",
+    "company": "Company",
+    "privacy": "Privacy Policy",
+    "legal": "Legal Notice",
+    "contact": "Contact"
+  },
+  "footer": {
+    "copyright": "© {year} SUN SYNERGY Co., Ltd."
+  }
+}

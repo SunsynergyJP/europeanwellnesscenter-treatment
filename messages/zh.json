@@ -1,0 +1,24 @@
+{
+  "common": {
+    "siteName": "European Wellness Center 哥打基纳巴卢",
+    "siteNameShort": "EWC 哥打基纳巴卢",
+    "ctaPrimary": "立即申请",
+    "ctaSecondary": "咨询联系"
+  },
+  "nav": {
+    "treatment": "关于干细胞治疗",
+    "cases": "治疗案例",
+    "doctors": "医生介绍",
+    "voices": "患者心声",
+    "faq": "常见问题",
+    "blog": "最新消息",
+    "flow": "治疗流程",
+    "company": "公司信息",
+    "privacy": "隐私政策",
+    "legal": "法律声明",
+    "contact": "联系我们"
+  },
+  "footer": {
+    "copyright": "© {year} SUN SYNERGY Co., Ltd."
+  }
+}

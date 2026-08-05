@@ -1,0 +1,24 @@
+{
+  "common": {
+    "siteName": "European Wellness Center コタキナバル",
+    "siteNameShort": "EWC コタキナバル",
+    "ctaPrimary": "お申込みはコチラ",
+    "ctaSecondary": "お問い合わせはコチラ"
+  },
+  "nav": {
+    "treatment": "幹細胞治療について",
+    "cases": "症例紹介",
+    "doctors": "医師紹介",
+    "voices": "患者様の声",
+    "faq": "よくある質問",
+    "blog": "お知らせ・コラム",
+    "flow": "治療の流れ",
+    "company": "会社情報",
+    "privacy": "プライバシーポリシー",
+    "legal": "特定商取引法に基づく表記",
+    "contact": "お問い合わせ"
+  },
+  "footer": {
+    "copyright": "© {year} SUN SYNERGY Co., Ltd."
+  }
+}
