@@ -3,15 +3,19 @@ import type { StructureResolver } from "sanity/structure";
 /**
  * Phase4で定義したDesk Structure(3グループ)。
  * 非エンジニアの運用担当者が迷わないよう分類する。
+ * S.list()には明示的な.id()が必須(未指定だと構造読み込みエラーになる)。
  */
 export const structure: StructureResolver = (S) =>
   S.list()
+    .id("root")
     .title("コンテンツ")
     .items([
       S.listItem()
+        .id("content-management")
         .title("コンテンツ管理")
         .child(
           S.list()
+            .id("content-management-list")
             .title("コンテンツ管理")
             .items([
               S.documentTypeListItem("case").title("症例紹介"),
@@ -22,9 +26,11 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.listItem()
+        .id("master-settings")
         .title("マスタ設定")
         .child(
           S.list()
+            .id("master-settings-list")
             .title("マスタ設定")
             .items([
               S.documentTypeListItem("condition").title("症状タグ"),
@@ -33,9 +39,11 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.listItem()
+        .id("site-settings")
         .title("サイト全体設定")
         .child(
           S.list()
+            .id("site-settings-list")
             .title("サイト全体設定")
             .items([
               S.documentTypeListItem("siteSettings").title("サイト設定"),
@@ -44,9 +52,11 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       S.listItem()
+        .id("scheduled-patients")
         .title("参加者専用エリア")
         .child(
           S.list()
+            .id("scheduled-patients-list")
             .title("参加者専用エリア")
             .items([
               S.documentTypeListItem("departureBatch").title("渡航バッチ"),
