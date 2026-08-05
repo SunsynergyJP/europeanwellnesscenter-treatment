@@ -1,14 +1,10 @@
 "use client";
 
-import { useRouter } from "@/lib/i18n/navigation";
+import { signOut } from "next-auth/react";
 
 export function LogoutButton() {
-  const router = useRouter();
-
   async function handleLogout() {
-    await fetch("/api/scheduled-patients/logout", { method: "POST" });
-    router.push("/scheduled-patients/login");
-    router.refresh();
+    await signOut({ redirectTo: "/ja/scheduled-patients/login" });
   }
 
   return (

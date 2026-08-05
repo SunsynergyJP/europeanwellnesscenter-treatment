@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "@/lib/i18n/navigation";
 import { Field, TextInput } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
@@ -16,14 +17,16 @@ export function LoginForm() {
     setErrorMessage(null);
 
     const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password");
 
-    const response = await fetch("/api/scheduled-patients/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(Object.fromEntries(formData)),
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
     });
 
-    if (!response.ok) {
+    if (result?.error) {
       setErrorMessage("メールアドレスまたはパスワードが正しくありません。");
       setIsSubmitting(false);
       return;
